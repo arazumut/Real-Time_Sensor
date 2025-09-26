@@ -20,6 +20,7 @@ import (
 	"github.com/twinup/sensor-system/services/sensor-consumer-service/internal/redis"
 	"github.com/twinup/sensor-system/services/sensor-consumer-service/pkg/logger"
 )
+denemedenme
 
 var (
 	configFile string
