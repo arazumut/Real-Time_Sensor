@@ -1,4 +1,4 @@
-# 🚀 TWINUP Real-Time Sensor Event Ingestion System
+# Real-Time Sensor Event Ingestion System
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)](https://golang.org/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker)](https://www.docker.com/)
