@@ -1,0 +1,35 @@
+# TWINUP Sensor Producer Service Configuration
+# Yüksek performanslı IoT cihaz simülasyonu için optimize edilmiş ayarlar
+
+kafka:
+  brokers:
+    - "localhost:9092"
+  topic: "sensor-data"
+  retry_max: 3
+  required_acks: 1  # Wait for leader acknowledgment
+  timeout: "30s"
+  compression_type: "snappy"  # Fast compression for better throughput
+  flush_frequency: "100ms"    # Batch messages for 100ms
+  flush_messages: 1000        # Or when 1000 messages accumulate
+  flush_bytes: 1048576       # Or when 1MB accumulates
+  max_message_bytes: 1000000 # 1MB max message size
+
+producer:
+  device_count: 10000         # 10K simulated devices
+  batch_size: 1000           # Messages per batch
+  produce_interval: "1s"     # Generate readings every second
+  worker_count: 10           # Concurrent workers
+  buffer_size: 10000         # Internal buffer size
+  enable_benchmark: true     # Enable performance logging
+  benchmark_interval: "10s"  # Log stats every 10 seconds
+  graceful_timeout: "30s"    # Graceful shutdown timeout
+
+metrics:
+  enabled: true
+  port: 8080
+  path: "/metrics"
+
+logger:
+  level: "info"              # debug, info, warn, error
+  format: "json"             # json, console
+  development: false         # Enable development mode for local testing

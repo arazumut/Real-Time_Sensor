@@ -1,0 +1,83 @@
+# TWINUP Sensor System - Prometheus Configuration
+# Tüm mikroservislerin metrics'lerini toplar
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+
+  # Sensor Producer Service Metrics
+  - job_name: 'sensor-producer'
+    static_configs:
+      - targets: ['sensor-producer:8080']
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    params:
+      format: ['prometheus']
+
+  # Sensor Consumer Service Metrics
+  - job_name: 'sensor-consumer'
+    static_configs:
+      - targets: ['sensor-consumer:8080']
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+
+  # Real-time Analytics Service Metrics
+  - job_name: 'real-time-analytics'
+    static_configs:
+      - targets: ['real-time-analytics:8080']
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+
+  # Alert Handler Service Metrics
+  - job_name: 'alert-handler'
+    static_configs:
+      - targets: ['alert-handler:8080']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+
+  # Authentication Service Metrics
+  - job_name: 'authentication'
+    static_configs:
+      - targets: ['authentication:8080']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # API Gateway Service Metrics
+  - job_name: 'api-gateway'
+    static_configs:
+      - targets: ['api-gateway:8081']
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+
+  # Infrastructure Metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+
+  - job_name: 'clickhouse'
+    static_configs:
+      - targets: ['clickhouse:8123']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # Kafka JMX Metrics (if enabled)
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka:9101']
+    scrape_interval: 30s

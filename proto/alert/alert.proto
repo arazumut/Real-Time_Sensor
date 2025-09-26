@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package twinup.alert;
+
+option go_package = "github.com/twinup/sensor-system/proto/alert";
+
+import "google/protobuf/timestamp.proto";
+import "proto/common/sensor.proto";
+
+// Alert Service - gRPC server for handling alerts
+service AlertService {
+  // Send alert for high temperature or other conditions
+  rpc SendAlert(AlertRequest) returns (AlertResponse);
+  
+  // Get alert history for a device
+  rpc GetAlertHistory(AlertHistoryRequest) returns (AlertHistoryResponse);
+  
+  // Health check
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+// Alert request message
+message AlertRequest {
+  string alert_id = 1;
+  string device_id = 2;
+  AlertType alert_type = 3;
+  AlertSeverity severity = 4;
+  string message = 5;
+  double temperature = 6;
+  double threshold = 7;
+  twinup.common.Location location = 8;
+  google.protobuf.Timestamp timestamp = 9;
+  map<string, string> metadata = 10;
+}
+
+// Alert response message
+message AlertResponse {
+  bool success = 1;
+  string message = 2;
+  string alert_id = 3;
+  google.protobuf.Timestamp processed_at = 4;
+}
+
+// Alert history request
+message AlertHistoryRequest {
+  string device_id = 1;
+  google.protobuf.Timestamp start_time = 2;
+  google.protobuf.Timestamp end_time = 3;
+  int32 limit = 4;
+  AlertSeverity min_severity = 5;
+}
+
+// Alert history response
+message AlertHistoryResponse {
+  repeated AlertRecord alerts = 1;
+  int32 total_count = 2;
+}
+
+// Alert record for history
+message AlertRecord {
+  string alert_id = 1;
+  string device_id = 2;
+  AlertType alert_type = 3;
+  AlertSeverity severity = 4;
+  string message = 5;
+  double temperature = 6;
+  double threshold = 7;
+  google.protobuf.Timestamp timestamp = 8;
+  google.protobuf.Timestamp processed_at = 9;
+  bool email_sent = 10;
+}
+
+// Health check messages
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool healthy = 1;
+  string status = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// Enums
+enum AlertType {
+  ALERT_TYPE_UNSPECIFIED = 0;
+  TEMPERATURE_HIGH = 1;
+  TEMPERATURE_LOW = 2;
+  HUMIDITY_HIGH = 3;
+  HUMIDITY_LOW = 4;
+  PRESSURE_ABNORMAL = 5;
+  DEVICE_OFFLINE = 6;
+  SENSOR_MALFUNCTION = 7;
+}
+
+enum AlertSeverity {
+  SEVERITY_UNSPECIFIED = 0;
+  LOW = 1;
+  MEDIUM = 2;
+  HIGH = 3;
+  CRITICAL = 4;
+}

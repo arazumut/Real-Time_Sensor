@@ -1,0 +1,69 @@
+# TWINUP Sensor System - Prometheus Alert Rules
+# Sistem sağlığı ve performans alertleri
+
+groups:
+  - name: twinup_sensor_system_alerts
+    rules:
+      # Kafka Consumer Lag Alert
+      - alert: KafkaConsumerLagHigh
+        expr: kafka_consumer_lag > 10000
+        for: 2m
+        labels:
+          severity: warning
+          service: sensor-consumer
+        annotations:
+          summary: "Kafka consumer lag is high"
+          description: "Consumer lag is {{ $value }} messages for {{ $labels.instance }}"
+
+      # High Temperature Alert
+      - alert: HighTemperatureDetected
+        expr: sensor_temperature > 90
+        for: 1m
+        labels:
+          severity: critical
+          service: sensor-system
+        annotations:
+          summary: "High temperature detected"
+          description: "Temperature {{ $value }}°C detected on device {{ $labels.device_id }}"
+
+      # Database Insert Latency Alert
+      - alert: DatabaseInsertLatencyHigh
+        expr: db_insert_latency_ms > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: sensor-consumer
+        annotations:
+          summary: "Database insert latency is high"
+          description: "Database insert latency is {{ $value }}ms"
+
+      # Redis Connection Alert
+      - alert: RedisConnectionDown
+        expr: redis_connected_clients == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis connection is down"
+          description: "No Redis connections detected"
+
+      # Service Down Alert
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down"
+          description: "{{ $labels.job }} service is down"
+
+      # Memory Usage Alert
+      - alert: HighMemoryUsage
+        expr: (process_resident_memory_bytes / 1024 / 1024) > 512
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}MB for {{ $labels.job }}"

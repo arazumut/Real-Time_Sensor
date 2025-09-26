@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package twinup.common;
+
+option go_package = "github.com/twinup/sensor-system/proto/common";
+
+import "google/protobuf/timestamp.proto";
+
+// Sensor data message - Kafka ve gRPC'de kullanılacak
+message SensorData {
+  string device_id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  double temperature = 3;
+  double humidity = 4;
+  double pressure = 5;
+  Location location = 6;
+  string status = 7;
+}
+
+// Location bilgisi
+message Location {
+  double latitude = 1;
+  double longitude = 2;
+  string region = 3;
+}
+
+// Device metadata
+message DeviceInfo {
+  string device_id = 1;
+  string device_type = 2;
+  string manufacturer = 3;
+  string firmware_version = 4;
+  google.protobuf.Timestamp last_seen = 5;
+  bool is_active = 6;
+}
+
+// Batch sensor data - performance için
+message SensorDataBatch {
+  repeated SensorData readings = 1;
+  int32 batch_size = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
