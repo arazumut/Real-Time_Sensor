@@ -1,0 +1,60 @@
+# TWINUP Alert Handler Service Configuration
+# gRPC tabanlı alert işleme için optimize edilmiş ayarlar
+
+grpc:
+  host: "0.0.0.0"                 # Listen on all interfaces
+  port: 50051                     # Standard gRPC port
+  max_recv_msg_size: 4194304      # 4MB max receive message size
+  max_send_msg_size: 4194304      # 4MB max send message size
+  connection_timeout: "30s"       # Connection timeout
+  max_concurrent_streams: 1000    # Max concurrent streams
+  keep_alive_time: "30s"          # Keep alive time
+  keep_alive_timeout: "5s"        # Keep alive timeout
+  max_connection_idle: "15m"      # Max connection idle time
+  max_connection_age: "30m"       # Max connection age
+  enable_reflection: true         # Enable gRPC reflection for development
+
+email:
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  username: ""                    # SMTP username (empty for dummy mode)
+  password: ""                    # SMTP password (empty for dummy mode)
+  from_email: "noreply@twinup.com"
+  from_name: "TWINUP Alert System"
+  enable_tls: true                # Enable TLS encryption
+  enable_ssl: false               # Enable SSL encryption
+  timeout: "30s"                  # Email send timeout
+  retry_count: 3                  # Number of retry attempts
+  retry_delay: "5s"               # Delay between retries
+  template_dir: "./templates"     # Email template directory
+  enable_dummy: true              # Enable dummy mode for development
+
+alert:
+  temperature_threshold: 90.0     # Temperature alert threshold (°C)
+  humidity_threshold: 95.0        # Humidity alert threshold (%)
+  pressure_threshold: 1050.0      # Pressure alert threshold (hPa)
+  cooldown_period: "1m"           # Cooldown period between alerts per device
+  max_alerts_per_device: 10       # Max alerts per device per hour
+  max_alerts_per_minute: 100      # Global rate limit
+  enable_rate_limiting: true      # Enable rate limiting
+  enable_deduplication: true      # Enable duplicate alert filtering
+  deduplication_window: "5m"      # Deduplication time window
+  worker_count: 3                 # Number of alert processing workers
+  queue_size: 1000                # Alert queue size
+  processing_timeout: "30s"       # Alert processing timeout
+
+storage:
+  enable_storage: true            # Enable alert storage
+  retention_period: "30d"         # How long to keep alerts
+  cleanup_interval: "1h"          # Cleanup interval
+  max_stored_alerts: 100000       # Maximum stored alerts
+
+metrics:
+  enabled: true
+  port: 8080
+  path: "/metrics"
+
+logger:
+  level: "info"                   # debug, info, warn, error
+  format: "json"                  # json, console
+  development: false              # Enable development mode for local testing
