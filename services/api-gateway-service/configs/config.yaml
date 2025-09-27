@@ -33,10 +33,10 @@ clickhouse:
   database: "sensor_data"
   username: "twinup"
   password: "twinup123"
-  max_open_conns: 5               # Fewer connections for read-only gateway
-  max_idle_conns: 2               # Fewer idle connections
+  max_open_conns: 25              # Increased connections for frontend requests
+  max_idle_conns: 10              # More idle connections for faster response
   conn_max_lifetime: "1h"         # Connection max lifetime
-  query_timeout: "30s"            # Query timeout
+  query_timeout: "10s"            # Reduced timeout for faster failure
 
 auth:
   service_url: "http://localhost:8080"

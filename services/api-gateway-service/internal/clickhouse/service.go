@@ -217,7 +217,7 @@ func (s *Service) GetDeviceList(page, pageSize int) ([]*DeviceInfo, int, error) 
 		FROM sensor_data.sensor_readings
 	`
 
-	var totalCount int
+	var totalCount uint64
 	row := s.conn.QueryRow(ctx, countQuery)
 	if err := row.Scan(&totalCount); err != nil {
 		s.errorCount++
@@ -264,12 +264,12 @@ func (s *Service) GetDeviceList(page, pageSize int) ([]*DeviceInfo, int, error) 
 
 	s.logger.Debug("Device list retrieved",
 		zap.Int("device_count", len(devices)),
-		zap.Int("total_count", totalCount),
+		zap.Int("total_count", int(totalCount)),
 		zap.Int("page", page),
 		zap.Int("page_size", pageSize),
 	)
 
-	return devices, totalCount, nil
+	return devices, int(totalCount), nil
 }
 
 // GetDeviceHistory retrieves historical data for a device

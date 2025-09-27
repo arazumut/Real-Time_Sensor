@@ -12,14 +12,14 @@ RUN apk add --no-cache git ca-certificates tzdata
 # Set working directory
 WORKDIR /build
 
-# Copy go mod files first for better caching
-COPY go.mod go.sum ./
+# Copy go mod files first for better caching  
+COPY services/api-gateway-service/go.mod services/api-gateway-service/go.sum ./
 
 # Download dependencies
 RUN go mod download
 
 # Copy source code
-COPY . .
+COPY services/api-gateway-service/ .
 
 # Build arguments for version information
 ARG VERSION=1.0.0
@@ -31,7 +31,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-w -s -X main.version=${VERSION} -X main.buildTime=${BUILD_TIME} -X main.gitCommit=${GIT_COMMIT}" \
     -a -installsuffix cgo \
     -o api-gateway \
-    ./cmd/main.go
+    ./cmd/
 
 # ============================================================================
 # Runtime Stage
