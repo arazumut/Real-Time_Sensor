@@ -1,0 +1,72 @@
+# TWINUP API Gateway Service Configuration
+# REST API gateway için optimize edilmiş ayarlar
+
+http:
+  host: "0.0.0.0"                 # Listen on all interfaces
+  port: 8081                      # HTTP server port (different from auth service)
+  read_timeout: "30s"             # Request read timeout
+  write_timeout: "30s"            # Response write timeout
+  idle_timeout: "120s"            # Connection idle timeout
+  max_header_bytes: 1048576       # 1MB max header size
+  enable_cors: true               # Enable CORS for development
+  trusted_proxies: []             # Trusted proxy IPs
+  rate_limit_rps: 1000            # Requests per second limit (higher for gateway)
+  enable_rate_limit: true         # Enable rate limiting
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""                    # No password for development
+  database: 0                     # Same as consumer service for shared cache
+  pool_size: 20                   # Connection pool size
+  min_idle_conns: 5               # Minimum idle connections
+  max_retries: 3                  # Maximum retry attempts
+  dial_timeout: "5s"              # Connection timeout
+  read_timeout: "3s"              # Read timeout
+  write_timeout: "3s"             # Write timeout
+  idle_timeout: "5m"              # Idle connection timeout
+  cache_ttl: "5m"                 # Default cache TTL
+
+clickhouse:
+  host: "localhost"
+  port: 9000
+  database: "sensor_data"
+  username: "twinup"
+  password: "twinup123"
+  max_open_conns: 5               # Fewer connections for read-only gateway
+  max_idle_conns: 2               # Fewer idle connections
+  conn_max_lifetime: "1h"         # Connection max lifetime
+  query_timeout: "30s"            # Query timeout
+
+auth:
+  service_url: "http://localhost:8080"
+  jwt_secret_key: "twinup-super-secret-jwt-key-2023"
+  token_cache_ttl: "15m"          # Cache validated tokens for 15 minutes
+  enable_auth: true               # Enable authentication
+  skip_auth_paths:                # Paths that don't require authentication
+    - "/health"
+    - "/api/v1/health"
+    - "/metrics"
+    - "/"
+
+gateway:
+  enable_caching: true            # Enable Redis caching
+  cache_default_ttl: "5m"         # Default cache TTL for responses
+  fallback_to_clickhouse: true    # Enable ClickHouse fallback
+  max_concurrent_requests: 1000   # Maximum concurrent requests
+  request_timeout: "30s"          # Request processing timeout
+  enable_compression: true        # Enable response compression
+  max_response_size: 10485760     # 10MB max response size
+  enable_pagination: true         # Enable pagination support
+  default_page_size: 100          # Default page size
+  max_page_size: 1000            # Maximum page size
+
+metrics:
+  enabled: true
+  port: 8081                      # Same port as HTTP for simplicity
+  path: "/metrics"
+
+logger:
+  level: "info"                   # debug, info, warn, error
+  format: "json"                  # json, console
+  development: false              # Enable development mode for local testing
