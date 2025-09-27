@@ -1,0 +1,58 @@
+# TWINUP Authentication Service Configuration
+# JWT tabanlı authentication ve RBAC için optimize edilmiş ayarlar
+
+http:
+  host: "0.0.0.0"                 # Listen on all interfaces
+  port: 8080                      # HTTP server port
+  read_timeout: "30s"             # Request read timeout
+  write_timeout: "30s"            # Response write timeout
+  idle_timeout: "120s"            # Connection idle timeout
+  max_header_bytes: 1048576       # 1MB max header size
+  enable_cors: true               # Enable CORS for development
+  trusted_proxies: []             # Trusted proxy IPs
+  rate_limit_rps: 100             # Requests per second limit
+  enable_rate_limit: true         # Enable rate limiting
+
+jwt:
+  secret_key: "twinup-super-secret-jwt-key-2023-change-in-production"
+  access_token_ttl: "15m"         # Access token lifetime
+  refresh_token_ttl: "24h"        # Refresh token lifetime
+  issuer: "twinup-auth-service"   # JWT issuer
+  audience: "twinup-users"        # JWT audience
+  algorithm: "HS256"              # Signing algorithm
+  enable_refresh_tokens: true     # Enable refresh token flow
+  max_concurrent_sessions: 5      # Max sessions per user
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""                    # No password for development
+  database: 1                     # Use DB 1 for auth (different from consumer)
+  pool_size: 10                   # Connection pool size
+  min_idle_conns: 3               # Minimum idle connections
+  max_retries: 3                  # Maximum retry attempts
+  dial_timeout: "5s"              # Connection timeout
+  read_timeout: "3s"              # Read timeout
+  write_timeout: "3s"             # Write timeout
+  idle_timeout: "5m"              # Idle connection timeout
+
+auth:
+  enable_registration: false      # Disable registration for demo
+  require_email_verification: false
+  password_min_length: 8          # Minimum password length
+  password_require_special: true  # Require special characters
+  max_login_attempts: 5           # Max failed login attempts
+  login_attempt_window: "15m"     # Login attempt window
+  session_timeout: "24h"          # Session timeout
+  enable_mfa: false               # Multi-factor authentication
+  default_role: "user"            # Default role for new users
+
+metrics:
+  enabled: true
+  port: 8080
+  path: "/metrics"
+
+logger:
+  level: "info"                   # debug, info, warn, error
+  format: "json"                  # json, console
+  development: false              # Enable development mode for local testing
