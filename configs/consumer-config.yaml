@@ -16,7 +16,7 @@ kafka:
   retry_backoff: "2s"             # Retry backoff time
 
 clickhouse:
-  host: "localhost"
+  host: "twinup-clickhouse"
   port: 9000
   database: "sensor_data"
   username: "twinup"
@@ -29,7 +29,7 @@ clickhouse:
   async_insert: true              # Enable async inserts for performance
 
 redis:
-  host: "localhost"
+  host: "twinup-redis"
   port: 6379
   password: ""                    # No password for development
   database: 0                     # Default database

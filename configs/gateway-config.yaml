@@ -14,7 +14,7 @@ http:
   enable_rate_limit: true         # Enable rate limiting
 
 redis:
-  host: "localhost"
+  host: "twinup-redis"
   port: 6379
   password: ""                    # No password for development
   database: 0                     # Same as consumer service for shared cache
@@ -28,7 +28,7 @@ redis:
   cache_ttl: "5m"                 # Default cache TTL
 
 clickhouse:
-  host: "localhost"
+  host: "twinup-clickhouse"
   port: 9000
   database: "sensor_data"
   username: "twinup"

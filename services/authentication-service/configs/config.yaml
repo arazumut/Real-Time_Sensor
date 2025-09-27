@@ -24,7 +24,7 @@ jwt:
   max_concurrent_sessions: 5      # Max sessions per user
 
 redis:
-  host: "localhost"
+  host: "twinup-redis"
   port: 6379
   password: ""                    # No password for development
   database: 1                     # Use DB 1 for auth (different from consumer)
@@ -49,7 +49,7 @@ auth:
 
 metrics:
   enabled: true
-  port: 8080
+  port: 9080
   path: "/metrics"
 
 logger:
