@@ -58,7 +58,7 @@ function App() {
       <div className="app">
         <nav className="navbar">
           <div className="nav-brand">
-            <h2>🦁 TWINUP Sensor System</h2>
+            <h2>Sensor System</h2>
           </div>
           <div className="nav-links">
             <Link to="/">Dashboard</Link>

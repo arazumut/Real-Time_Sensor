@@ -360,4 +360,4 @@ Bu proje TWINUP tarafından geliştirilmiştir.
 
 ---
 
-**🦁 TWINUP Sensor System - Mükemmel IoT Çözümü! 🚀**
+** TWINUP Sensor System - Mükemmel IoT Çözümü! 🚀**

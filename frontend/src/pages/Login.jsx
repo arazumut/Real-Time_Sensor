@@ -37,7 +37,7 @@ const Login = ({ setToken }) => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h1 className="login-title">🦁 TWINUP Login</h1>
+        <h1 className="login-title"> TWINUP Login</h1>
         
         <form onSubmit={handleLogin}>
           <div className="form-group">
